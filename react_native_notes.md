@@ -120,6 +120,7 @@ const [stateName, setName] = useState('Kuma') //Text input 1: Set state and decl
 ---
 
 ## Outputting State with Lists and ScrollView
+Scroll view loads all items!  
 https://www.youtube.com/watch?v=W-pg1r6-T0g&list=PL4cUxeGkcC9ixPU-QkScoRBVxtPPzVjrQ&index=6
 ```
   // We need a key property, so React can keep track of the elements. 
@@ -148,6 +149,48 @@ https://www.youtube.com/watch?v=W-pg1r6-T0g&list=PL4cUxeGkcC9ixPU-QkScoRBVxtPPzV
 ```
 ---
 
+## Outputting Lists with Flatlist  
+-Flat lists use lazy loading.  
+-Props control how the list works  
+-`FlatList` automatically adds key  
+-If theres no key, but theres an id instead, you can use a `keyExtractor`  
+-You can set this to use columns with `numColumns{}` as well  
+
+```
+  <View>
+    <FlatList 
+      keyExtractor={() => item.id}
+      data={statePeople}
+      renderItem={({ item }) => (
+        <Text style={styles.item}>{item.name}</Text>
+      )}
+    />
+  </View>
+```
+---
+
+## Touchable Components
+https://www.youtube.com/watch?v=QhX25YGf8qg&list=PL4cUxeGkcC9ixPU-QkScoRBVxtPPzVjrQ&index=8  
+Using `TouchableOpacity`
+
+```
+  <TouchableOpacity onPress={() => pressHandler(item.id)}> {/* Touchable Component 1: Surround with toucbale, call function */}
+    <Text style={styles.item}>{item.name}</Text>
+  </TouchableOpacity>
+
+    const pressHandler = (id) => { //Touchable Component 2. Function called
+    console.log(id) // see the expo console
+    setPeopleFunction((previousPeople) => {// take old state, return new state
+      return(previousPeople.filter(person => { //remove current person
+        return person.id != id //if it is false, filter it out of the array
+      }))
+    }) 
+  }
+```
+---
+
+Stopped at part 9, to do app.
+https://www.youtube.com/watch?v=uLHFPt9B2Os&list=PL4cUxeGkcC9ixPU-QkScoRBVxtPPzVjrQ&index=9
 
 ## Routing  
 https://www.youtube.com/watch?v=OmQCU-3KPms  

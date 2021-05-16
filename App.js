@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';  //State 1: Import the useState hook
-import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 
 export default function App() {
 
@@ -27,21 +27,27 @@ export default function App() {
   // Using State with Lists and ScrollView ------------------------------------------------------------------------------------------------
   // We need a key property, so React can keep track of the elements. 
   const [statePeople, setPeopleFunction] = useState([ //Lists 1: Set state to an array and declare function
-    { name: 'Kuma', key: '1' },
-    { name: 'Mona', key: '2' },
-    { name: 'Raven', key: '3' },
-    { name: 'Test', key: '4' },
-    { name: 'Test', key: '5' },
-    { name: 'Test', key: '6' },
-    { name: 'Test', key: '7' },
+    { name: 'Kuma', key: '1', id: 1, },
+    { name: 'Mona', key: '2', id: 2, },
+    { name: 'Raven', key: '3', id: 3, },
+    { name: 'Test', key: '4', id: 4, },
+    { name: 'Test', key: '5', id: 5, },
+    { name: 'Test', key: '6', id: 6, },
+    { name: 'Test', key: '7', id: 7, },
   ]) //
-
   // Using State with Lists and ScrollView ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   
-  
+  // Touchable Component -----------------------------------------------------
+  const pressHandler = (id) => { //Touchable Component 2. Function called
+    console.log(id) // see the expo console
+    setPeopleFunction((previousPeople) => {// take old state, return new state
+      return(previousPeople.filter(person => { //remove current person
+        return person.id != id //if it is false, filter it out of the array
+      }))
+    }) 
+  }
+  // End TouchableOpacity ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  
-  
   return (
     <View style={styles.container}>
 {/*    State Basics, Example 1    */}
@@ -87,6 +93,22 @@ export default function App() {
           })}
         </ScrollView>
       </View>
+{/* State: Outputting flat lists */} 
+      <View>
+        {/* Props control how the list works */}
+        {/* FlatList automatically adds key */}
+        {/* If theres no key, but theres an id instead, you can use a key extractor */}
+        {/* You can set this to use columns with numColumns{} as well */}
+        <FlatList 
+          keyExtractor={() => statePeople.id}
+          data={statePeople}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => pressHandler(item.id)}> {/* Touchable Component 1: Surround with touchable, call function */}
+              <Text style={styles.item}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     </View>
   );
 }
@@ -110,5 +132,10 @@ const styles = StyleSheet.create({
     borderColor: '#777',
     margin: 10,
     width: 200,
+  },
+  item: {
+    borderWidth: 1,
+    borderColor: '#777',
+    color: '#128939',
   }
 });
